@@ -1,0 +1,21 @@
+/* TC=O(N^2) SC=O(N) (ASC)
+void insert(stack<int>&s,int x)
+{
+    if(s.empty() or s.top()<x)
+    { s.push(x); return ;}
+    else {
+        int temp=s.top(); 
+        s.pop();
+        insert(s,x);
+        s.push(temp);
+    }
+}
+void SortedStack :: sort()
+{
+  if(s.empty()) return ;
+  int temp=s.top(); 
+  s.pop();
+  sort();
+  insert(s,temp);
+}
+*/
