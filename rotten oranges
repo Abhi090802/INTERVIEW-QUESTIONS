@@ -1,5 +1,7 @@
+// BFS TRAVERSAL 
+// TC=O(M*N) SC=O(M*N) 
 vector<int>dx={-1,0,0,1}; 
-    vector<int>dy={0,-1,1,0}; 
+vector<int>dy={0,-1,1,0}; 
      void bfs(vector<vector<int>> &grid,vector<vector<int>>& vis,queue<pair<int,int>> q,int n,int m)
    {
        while(!q.empty())
