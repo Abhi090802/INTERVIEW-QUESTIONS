@@ -1,0 +1,28 @@
+// TC=O(NLOGN) SC=O(N)+O(N)+O(N) 
+int minSwaps(vector<int>&nums)
+    {
+         int ans=0; int n=nums.size();
+        vector<bool>vis(n,0); 
+        map<int,int>m1; 
+        vector<int>temp=nums; 
+       sort(temp.begin(),temp.end()); 
+       for(int i=0;i<temp.size();i++)
+       m1[temp[i]]=i; 
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]==temp[i] or vis[i]==1) 
+            continue; 
+            else {
+                int j=i; int cyc=0; 
+      while(nums[j]!=temp[j] and vis[j]==0)
+                {
+                    vis[j]=1; 
+                    j=m1[nums[j]]; 
+                    cyc++; 
+                }
+                ans+=cyc-1; 
+            }
+        }
+        return ans;
+    }
+
