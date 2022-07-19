@@ -1,0 +1,98 @@
+//kind of bfs solution 
+// TC=O(NLOGN) SC=LINEAR 
+void dfs(Node* root,vector<vector<int>>&adj){
+        if(!root)
+        return;
+        if(root->left){
+            int u=root->data,v=root->left->data;
+            adj[u].push_back(v);
+            adj[v].push_back(u);        
+        }
+        if(root->right){
+            int u=root->data,v=root->right->data;
+            adj[u].push_back(v);
+            adj[v].push_back(u);  
+        }
+        dfs(root->left,adj);
+        dfs(root->right,adj);
+    }
+    vector<int>KDistanceNodes(Node* root,int target,int k)
+    {
+        vector<vector<int>>adj(10001);
+        dfs(root,adj);
+        queue<int>q;
+        vector<int>v,visited(10001,0),dist(10001,0);
+        if(!root->left&&!root->right){
+            if(k==0)
+                v.push_back(root->data);
+            return v;
+        }
+        if(k==0){
+            v.push_back(target);
+            return v;
+        }
+        q.push(target);
+        visited[target]=1;
+        while(!q.empty()){
+            int temp=q.front();
+            q.pop();
+            for(int i:adj[temp]){
+                if(!visited[i]){
+                    visited[i]=1;
+                    dist[i]=1+dist[temp];
+                    if(dist[i]==k)
+                     v.push_back(i);
+                    else if(dist[i]<k)
+                     q.push(i);
+                }
+            }
+        }
+        sort(v.begin(),v.end());
+        return v;
+    }
+
+// Kind of DFS solution by using blocking node concept 
+// TC=O(NLOGN) SC=LINEAR 
+
+bool findPath(Node* root , int target){
+   if(!root)return false;
+   if(root->data == target){
+       path.push_back(root);
+       return true;
+   }
+  bool filc =  findPath(root->left , target);
+  if(filc){
+      path.push_back(root);
+      return true;
+  }
+  bool firc = findPath(root->right , target);
+   if(firc){
+       path.push_back(root);
+       return true;
+   }
+   return false;
+}
+
+vector<int>ans;
+void printKlevelsDown (Node* root, int k,Node* blocker){
+   if(root == NULL || k<0 || root == blocker)
+   return;
+   if(k == 0)ans.push_back(root->data);
+   printKlevelsDown(root->left , k-1 , blocker);
+   printKlevelsDown(root->right , k-1 , blocker);
+}
+public:
+
+   vector <int> KDistanceNodes(Node* root, int target , int k)
+   {  path.clear();
+      ans.clear();
+      findPath(root , target);
+
+     
+      for(int i = 0 ; i<path.size() ; i++){
+          printKlevelsDown(path[i] , k-i , i==0?NULL : path[i-1]);
+      }
+      sort(ans.begin(),ans.end());
+      return ans;
+   }
+
