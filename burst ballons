@@ -1,0 +1,56 @@
+// recursive approach 
+// TC=O(N+2*N+4*N+8*N.........N TERMS)*N
+// MEMOIZATION APPROACH 
+// TC=O(N*N)*N  SC=O(N*N)+O(N) (ASC) 
+int helper(deque<int>&nums,int i,int j,vector<vector<int>>&dp)
+    {
+        if(i>j) return 0; 
+        if(i==j) { return dp[i][j]=nums[i]*nums[i-1]*nums[i+1]; }
+        if(dp[i][j]!=-1) return dp[i][j]; 
+        int ans=INT_MIN; 
+        int count; 
+        for(int k=i;k<=j;k++)
+        {
+            count=nums[k]*nums[i-1]*nums[j+1]+helper(nums,i,k-1,dp)+helper(nums,k+1,j,dp); 
+            ans=max(ans,count); 
+        }
+        return dp[i][j]=ans; 
+    }
+    int maxCoins(vector<int>& nums) {
+        deque<int>dq; 
+        dq.push_front(1);
+        int n=nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1)); 
+        for(auto it:nums)
+            dq.push_back(it); 
+        dq.push_back(1); 
+        helper(dq,1,dq.size()-2,dp); 
+        return dp[1][dq.size()-2];
+    }
+
+// TABULATION APPROACH 
+// TC=O(N*N)*(N) SC=O(N*N) 
+int maxCoins(vector<int>& nums) {
+        deque<int>dq; 
+        dq.push_front(1);
+        int n=nums.size();
+        vector<vector<int>>dp(n+2,vector<int>(n+2,0)); 
+        for(auto it:nums)
+            dq.push_back(it); 
+        dq.push_back(1); 
+        for(int i=1;i<=dq.size()-2;i++)
+            dp[i][i]=dq[i]*dq[i-1]*dq[i+1]; 
+        for(int i=dq.size()-2;i>=1;i--)
+        {
+            for(int j=i+1;j<=dq.size()-2;j++)
+            {
+                for(int k=i;k<=j;k++)
+                {
+                    dp[i][j]=max(dp[i][j],dq[k]*dq[i-1]*dq[j+1]+dp[i][k-1]+dp[k+1][j]); 
+                }
+            }
+        }
+        return dp[1][dq.size()-2];
+    }
+
+
