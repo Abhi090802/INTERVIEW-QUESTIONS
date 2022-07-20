@@ -1,0 +1,114 @@
+// brute approach 
+// TC=o(n^2) SC=o(h) (asc) 
+void findMinMax(Node *node, int &min, int &max, int hd)
+{
+   
+    if (node == NULL) return;
+    if (hd < min)  min = hd;
+    else if (hd > max) max = hd;
+    findMinMax(node->left, min, max, hd-1);
+    findMinMax(node->right, min, max, hd+1);
+}
+void printVerticalLine(Node *node, int line_no, int hd,vector<int>& ans)
+{
+    if (node == NULL) return;
+  if(hd==line_no) 
+  ans.push_back(node->data); 
+    printVerticalLine(node->left, line_no, hd-1,ans);
+    printVerticalLine(node->right, line_no, hd+1,ans);
+}
+vector<int>verticalOrder(Node *root)
+{
+    int min = 0, max = 0;
+    findMinMax(root, min, max, 0);
+    vector<int>ans; 
+    for (int line_no = min; line_no <= max; line_no++)
+        printVerticalLine(root, line_no, 0,ans);
+    return ans;
+}
+
+// first optimal approach 
+// TC=o(nlogn)  SC=o(v) v=no. of vertical lines 
+void verticalSumUtil(Node *node, int hd,
+                     map<int, int> &Map)
+{
+    if (node == NULL) return;
+    verticalSumUtil(node->left, hd-1, Map);
+    Map[hd] += node->data;
+    verticalSumUtil(node->right, hd+1, Map);
+}
+vector<int> verticalSum(Node *root)
+{
+    map < int, int> Map;
+     vector<int>ans; 
+    verticalSumUtil(root, 0, Map);
+    for (auto it:Map)
+             ans.push_back(it->second);
+    return ans;
+}
+
+// second optimal approach dd aproach 
+// TC=o(n) SC=o(v)  for dd 
+ 
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+Node* newNode(int val)
+{
+    Node* temp = new Node; 
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+    struct LLNode {
+    int key;
+    struct LLNode *prev, *next;
+};
+  
+LLNode* newLLNode(int key)
+{
+    LLNode* temp = new LLNode;
+    temp->key = key;
+    temp->prev = temp->next = NULL;
+    return temp;
+}
+ 
+void verticalSumDLLUtil(TNode* root, LLNode* sumNode)
+{
+    sumNode->key = sumNode->key + root->key;
+    if (root->left) {
+        if (sumNode->prev == NULL) {
+            sumNode->prev = newLLNode(0);
+            sumNode->prev->next = sumNode;
+        }
+        verticalSumDLLUtil(root->left, sumNode->prev);
+    }
+    if (root->right) {
+        if (sumNode->next == NULL) {
+            sumNode->next = newLLNode(0);
+            sumNode->next->prev = sumNode;
+        }
+        verticalSumDLLUtil(root->right, sumNode->next);
+    }
+}
+
+vector<int> verticalSum(TNode* root)
+{
+    LLNode* sumNode = newLLNode(0);
+    verticalSumDLLUtil(root, sumNode);
+    while (sumNode->prev != NULL) {
+        sumNode = sumNode->prev;
+    }
+    vector<int>ans; 
+    while (sumNode != NULL) {
+      ans.push_back(sumNode->data); 
+           sumNode = sumNode->next;
+    } 
+    return ans;
+}
+
+
