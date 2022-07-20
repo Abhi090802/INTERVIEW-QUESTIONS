@@ -1,0 +1,48 @@
+// recursive memoization approach 
+// TC=KIND OF(N+N^2+N^4+N^8+.........)*N
+// SC=O(N*N)+O(N)(ASC)
+// MEMOIZATION TC=O(N*N)*O(N) 
+// SC=O(N*N)+O(N) 
+int helper(int i,int j,int arr[],vector<vector<int>>&dp)
+    {
+        if(i==j) return  dp[i][j]=0; 
+        int val=0; 
+        if(dp[i][j]!=-1) return dp[i][j]; 
+        int ans=INT_MAX; 
+        for(int k=i;k<j;k++)
+        {
+            val=arr[i-1]*arr[k]*arr[j]+
+            helper(i,k,arr,dp)+
+            helper(k+1,j,arr,dp); 
+            ans=min(ans,val); 
+        }
+        return dp[i][j]=ans;
+    }
+    int matrixMultiplication(int N,int mat[])
+    {
+ vector<vector<int>>dp(N,vector<int>(N,-1)); 
+      return helper(1,N-1,mat,dp); 
+}
+      
+// iterative tabulation approach 
+// TC=O(N*N)*O(N) 
+// SC=O(N*N) 
+int matrixMultiplication(int N,int mat[])
+{
+   vector<vector<int>>dp(N,vector<int>(N,0)); 
+       for(int i=N-1;i>=1;i--)
+       {
+           for(int j=i+1;j<=N-1;j++)
+           {
+               int ans=INT_MAX; 
+               for(int k=i;k<j;k++)
+               {
+                   dp[i][j]=mat[i-1]*mat[k]*mat[j]+
+                   dp[i][k]+dp[k+1][j]; 
+                   ans=min(ans,dp[i][j]); 
+               }
+               dp[i][j]=ans; 
+           }
+       }
+       return dp[1][N-1];
+    }
