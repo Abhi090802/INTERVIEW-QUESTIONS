@@ -1,0 +1,16 @@
+// tc=o(n) SC=o(n) 
+class Solution {
+public:
+    int maxProfit(vector<int>& nums) {
+        int ans=0; int mini=1e9; 
+        for(int i=0;i<nums.size();i++)
+            {
+            mini=min(mini,nums[i]); 
+            if(nums[i]>mini) 
+                { ans+=nums[i]-mini; 
+                 mini=nums[i]; }
+            }
+        return ans;
+            
+    }
+};
