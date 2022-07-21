@@ -1,0 +1,45 @@
+// recursive solution tc=o(2^n) SC=o(n)
+// MEMOIZATION approach TC=o(n*2*2) SC=o(n)+o(n*2*2) 
+
+class Solution {
+public: int dp[1000000][3][3]; 
+    int helper(vector<int>&nums,int idx,int k,bool opt)
+       {   if(idx>=nums.size()) return 0;
+          if(k<=0) return 0; 
+   if(dp[idx][k][opt]!=-1) return dp[idx][k][opt]; 
+    int buy=0,sell=0;  int profit=0;
+      if(!opt)        buy=max(-nums[idx]+helper(nums,idx+1,k,!opt),helper(nums,idx+1,k,opt)); 
+        else          sell=max(nums[idx]+helper(nums,idx+1,k-1,!opt),helper(nums,idx+1,k,opt));  profit=max(profit,sell+buy); 
+      return dp[idx][k][opt]=profit; 
+   }
+  int maxProfit(vector<int>& nums) {
+  int n=nums.size();  
+  memset(dp,-1,sizeof dp); 
+  return helper(nums,0,2,0);  
+ }
+// tabulation approach TC=o(n*2*2) SC=o(n*2*2)
+
+class Solution {
+public: int dp[1000000][3][3];
+    int maxProfit(vector<int>& nums) {
+        int n=nums.size();  
+        memset(dp,0,sizeof dp); 
+       for(int i=n-1;i>=0;i--)
+           {  for(int j=1;j<=2;j++)
+               { for(int k=0;k<=1;k++)
+                   {
+                   int profit=0;  int buy=0,sell=0; 
+                   if(!k)
+            buy=max(-nums[i]+dp[i+1][j][1-k],dp[i+1][j][k]);  
+                   else
+                 sell=max(nums[i]+dp[i+1][j-1][1-k],dp[i+1][j][k]);  
+                   profit=max(profit,sell+buy);  
+                   dp[i][j][k]=profit; 
+                   }
+               }
+           }
+            return dp[0][2][0];
+    }
+
+
+
