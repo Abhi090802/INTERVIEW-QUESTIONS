@@ -1,0 +1,20 @@
+// for push tc=o(q*logn) for pop tc=o(q) 
+// SC for both functions=o(n)+o(n)
+
+class FreqStack {
+public:
+       priority_queue<tuple<int,int,int>>pq;  int time=0; 
+        map<int,int>m1; 
+    FreqStack(){}
+    void push(int val) {
+        pq.push({++m1[val],++time,val}); 
+    }
+    int pop() {
+        auto [freq,time,val]=pq.top();  
+        pq.pop(); 
+        m1[val]--;
+            
+        return val;
+    }
+
+
