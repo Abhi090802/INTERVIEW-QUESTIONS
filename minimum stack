@@ -1,0 +1,35 @@
+// brute approach using stack of pair in which the second value represents the minimum value and the first value reprents the current balue 
+// TC=o(1)// for each operation SC=o(2*n) 
+// Optimal approach using decoding two values to one 
+// TC=o(1) SC=o(n) 
+
+class Solution{
+    int minEle=INT_MAX; 
+    stack<int> st;
+    public:
+       int getMin(){
+            if(st.empty()) return -1; 
+            return minEle;
+       }
+       int pop(){
+           if(st.empty()) return -1; 
+           else if(st.top()>=minEle)
+          { int temp=st.top(); st.pop(); return temp; } 
+           else {
+               int temp=minEle; 
+               minEle=2*minEle-st.top(); 
+               st.pop(); 
+               return temp;
+           }
+       }
+       void push(int x){
+           if(st.empty())
+           { minEle=x; st.push(x); }
+           else if(x<minEle) 
+           {  st.push(2*x-minEle);minEle=x; } 
+           else {
+         st.push(x);
+           }
+}
+
+
