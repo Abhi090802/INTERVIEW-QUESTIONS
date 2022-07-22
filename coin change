@@ -1,0 +1,44 @@
+// for recursive approach the tc=o(2^n) sc=o(target) 
+// for memoization tc=o(target*n) sc=o(n*target)+o(target) 
+class Solution {
+  public: 
+  long long int helper(int arr[],int idx,int target,vector<vector<long long int>>&dp)
+  {
+      if(target==0) return 1; 
+      if(target<0) return 0; 
+      if(idx<0) return 0; 
+      if(dp[idx][target]!=-1) return dp[idx][target]; 
+      long long int take=helper(arr,idx,target-arr[idx],dp); 
+      long long int nottake=helper(arr,idx-1,target,dp); 
+      return dp[idx][target]=take+nottake; 
+  }
+    long long int count(int S[], int m, int n) {
+      vector<vector<long long int>>dp(m,vector<long long int>(n+1,-1)); 
+          return helper(S,m-1,n,dp); 
+    }
+};
+
+// tabulation approach 
+// tc=o(target*n) sc=o(target*n)
+class Solution {
+  public: 
+  long long int count(int arr[], int m, int n) {
+      vector<vector<long long int>>dp(m+1,vector<long long int>(n+1,0));
+      for(int i=0;i<=m;i++)
+      dp[i][0]=1;
+      for(int i=1;i<=n;i++)
+          dp[0][i]=0; 
+      for(int i=1;i<=m;i++)
+      {
+          for(int j=1;j<=n;j++)
+          {
+                  long long int take=0; 
+                  if(j>=arr[i-1])
+                  take=dp[i][j-arr[i-1]];
+                   long long int nottake=dp[i-1][j]; 
+                 dp[i][j]=take+nottake; 
+          }
+      }
+          return dp[m][n]; 
+    }
+};
