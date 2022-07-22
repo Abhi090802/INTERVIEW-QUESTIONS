@@ -1,0 +1,69 @@
+// tc=o(2^n) when all the character 
+//in pattern are'*' for each character two 
+//recusrion calls for skipping and match 
+// SC=o(n+m) when pattern like this"*********" 
+// Skip for n-1 stars then make match for 
+// 1 character with star with all match 
+// MEMOIZATION approach 
+// tc=o(n*m) SC=o(n*m)+o(n+m) 
+
+class Solution {
+public:
+    vector<vector<int>>dp;
+    bool helper(string &p,string &s,int i,int j)
+        {
+        if(i<0 and j>=0) 
+            return 0;
+        if(i<0 and j<0) 
+            return 1;
+        if(j<0 and i>=0)
+            {
+            for(int k=0;k<=i;k++)
+                if(p[k]!='*')
+                    return 0;
+            return 1;
+            } 
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(p[i]==s[j] or p[i]=='?')
+            return dp[i][j]=helper(p,s,i-1,j-1);
+        else if(p[i]=='*')
+            return dp[i][j]=helper(p,s,i-1,j) or helper(p,s,i,j-1);
+        return dp[i][j]=0;
+        }
+    bool isMatch(string s, string p) {
+        int m=p.size(); int n=s.size(); 
+        dp.resize(m,vector<int>(n,-1));
+        return helper(p,s,m-1,n-1);
+    }
+};
+
+
+// tabulation approach 
+// tc=o(n*m) SC=o(n*m) 
+
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int m=p.size(); int n=s.size(); 
+    vector<vector<bool>>dp(m+1,vector<bool>(n+1,0));
+        for(int j=1;j<=m;j++)
+            dp[0][j]=0;
+          dp[0][0]=1;
+        for(int i=1;i<=m;i++)
+        { bool flag=1;
+            for(int k=1;k<=i;k++)
+               { if(p[k-1]!='*')
+                {  flag=0; break; } }
+                  dp[i][0]=flag;. }
+        for(int i=1;i<=m;i++)
+        {   for(int j=1;j<=n;j++)
+            {   if(p[i-1]==s[j-1] or p[i-1]=='?') dp[i][j]=dp[i-1][j-1];
+else if(p[i-1]=='*')
+  dp[i][j]=dp[i-1][j] or dp[i][j-1];
+else dp[i][j]=0;
+      }
+ }
+return dp[m][n]; 
+  }
+};
+
