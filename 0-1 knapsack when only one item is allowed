@@ -1,0 +1,44 @@
+// in case of recursive approach the time complexity is approax
+// tc=o(2^n) and sc=o(n)(asc) when at each step both take and not take can be valid 
+// in case of memoization approach the time omplexity wil be 
+// tc=o(n*w) sc=o(n*w)+o(n) 
+int helper(int wt[],int val[],int w,int idx,int n,vector<vector<int>>&dp)
+   {
+       if(idx==n) return 0; 
+       if(dp[idx][w]!=-1) return dp[idx][w]; 
+       int take=0; int nottake=0; 
+       if(wt[idx]<=w)
+       take=val[idx]+helper(wt,val,w-wt[idx],idx+1,n,dp); 
+       nottake=helper(wt,val,w,idx+1,n,dp); 
+       return dp[idx][w]=max(take,nottake);
+   }
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+      vector<vector<int>>dp(n,vector<int>(W+1,-1));
+     return helper(wt,val,W,0,n,dp); 
+    }
+};
+
+// tc=o(n*w) sc=o(n*w) 
+int knapSack(int W, int wt[], int val[], int n) 
+    { 
+      vector<vector<int>>dp(n+1,vector<int>(W+1,0));
+          for(int i=0;i<=W;i++)
+          dp[n][i]=0;
+      for(int i=n-1;i>=0;i--)
+      {
+          for(int j=0;j<=W;j++)
+          {
+              int take=0; 
+              int nottake=0; 
+              if(wt[i]<=j)
+              take=val[i]+dp[i+1][j-wt[i]]; 
+              nottake=dp[i+1][j];
+              dp[i][j]=max(take,nottake);
+          }
+      }
+     return dp[0][W];
+    }
+
+
+
