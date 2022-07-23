@@ -1,0 +1,59 @@
+// brute force approach 
+// for each index find left max
+// and right max by using nested for loops 
+// add min(leftmax,rightmax)-cur[i]
+// Tc=o(n^2) SC=o(1)
+// Optimal approach -1(using prefix and suffix sum)
+// Find the leftmax and rightmax using prefix and suffix array precomputation concept 
+// Tc=o(3*n) SC=o(2*n) 
+
+class Solution {
+public:  
+    int trap(vector<int>& height) {
+        int n=height.size();
+        vector<int>prefix(n,0);       vector<int>suffix(n,0);
+        prefix[0]=height[0];
+        for(int i=1;i<n;i++)
+            prefix[i]=max(prefix[i-1],height[i]);
+        suffix[n-1]=height[n-1];
+        for(int i=n-2;i>=0;i--)
+        suffix[i]=max(suffix[i+1],height[i]);
+         int ans=0;
+        for(int i=0;i<n;i++)
+            ans+=min(prefix[i],suffix[i])-height[i];
+        return ans;
+    }
+};
+
+
+// Best approach : using two pointer approach 
+// Tc=o(n) SC=o(1) 
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int low=0; int high=height.size()-1; 
+        int leftmax=0; int res=0; 
+        int rightmax=0; 
+        while(low<=high)
+            {
+            if(height[low]<=height[high])
+                {
+                if(height[low]>leftmax)
+                    leftmax=height[low]; 
+                   res+=leftmax-height[low];  
+                  low++; 
+                }
+                
+                else {
+                      if(height[high]>rightmax)
+                        rightmax=height[high]; 
+                    res+=rightmax-height[high]; 
+                    high--;
+                    }
+            }
+        return res;
+    }
+};
+
+
