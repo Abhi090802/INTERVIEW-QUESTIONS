@@ -1,0 +1,24 @@
+// tc=o(n) SC=o(n) 
+void helper(Node*&root,vector<int>&inorder)
+{
+    if(!root) return ; 
+    helper(root->left,inorder); 
+    inorder.push_back(root->data); 
+    helper(root->right,inorder);
+}
+Node*helper1(vector<int>&inorder,int l,int r)
+{
+   if(l>r) return nullptr; 
+   int mid=l+(r-l)/2;
+   Node*root=new Node(inorder[mid]);
+   root->left=helper1(inorder,l,mid-1); 
+   root->right=helper1(inorder,mid+1,r);
+   return root; 
+    
+}
+Node* buildBalancedTree(Node* root)
+{ 
+    vector<int>inorder; 
+    helper(root,inorder); 
+    return helper1(inorder,0,inorder.size()-1);
+}
