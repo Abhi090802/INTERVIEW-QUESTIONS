@@ -1,0 +1,11 @@
+// tc=o(n) sc=o(n) 
+class Solution{
+    public:
+    int maxPathSum(Node* root)
+    {
+        if(!root)return 0;
+        int ls=maxPathSum(root->left);
+        int rs=maxPathSum(root->right);
+        return max(ls,rs)+root->data;
+    }
+};
