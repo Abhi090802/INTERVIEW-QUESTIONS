@@ -1,0 +1,43 @@
+// tc=o(nlogn) sc=o(n^2) 
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+ unordered_map<string, vector<string>> mp;
+        for (string s : strs) {
+            string t = s; 
+            sort(t.begin(), t.end());
+            mp[t].push_back(s);
+        }
+        vector<vector<string>> anagrams;
+        for (auto p : mp) 
+            anagrams.push_back(p.second);
+        return anagrams;
+    }
+
+// as the string alphabets are only lowercase 
+// we can sort the string optimally using counting sort 
+// tc=o(26*n) sc=o(n)+o(26)+o(n^2)
+class Solution {
+public:
+        string strSort(string s) {
+          int counter[26] = {0};
+          for (char c : s) 
+            counter[c - 'a']++;
+           string t;
+            for (int c = 0; c < 26; c++) {
+            t += string(counter[c], c + 'a');
+        return t;
+    }
+
+   vector<vector<string>> groupAnagrams(vector<string>& strs) {  unordered_map<string, vector<string>> mp;
+       for (string s : strs) 
+            mp[strSort(s)].push_back(s);
+        vector<vector<string>> anagrams;
+        for (auto p : mp) 
+            anagrams.push_back(p.second);
+        return anagrams;
+    }
+
+
+
+    
