@@ -1,6 +1,6 @@
-// tc=o(2^n) when all the character 
+// tc=o(2^n) when all the character
 //in pattern are'*' for each character two 
-//recusrion calls for skipping and match 
+//recursion calls for skipping and match 
 // SC=o(n+m) when pattern like this"*********" 
 // Skip for n-1 stars then make match for 
 // 1 character with star with all match 
@@ -27,7 +27,8 @@ public:
         if(p[i]==s[j] or p[i]=='?')
             return dp[i][j]=helper(p,s,i-1,j-1);
         else if(p[i]=='*')
-            return dp[i][j]=helper(p,s,i-1,j) or helper(p,s,i,j-1);
+            return dp[i][j]=helper(p,s,i-1,j) 
+              or helper(p,s,i,j-1);
         return dp[i][j]=0;
         }
     bool isMatch(string s, string p) {
@@ -45,7 +46,7 @@ class Solution {
 public:
     bool isMatch(string s, string p) {
         int m=p.size(); int n=s.size(); 
-    vector<vector<bool>>dp(m+1,vector<bool>(n+1,0));
+   vector<vector<bool>>dp(m+1,vector<bool>(n+1,0));
         for(int j=1;j<=m;j++)
             dp[0][j]=0;
           dp[0][0]=1;
@@ -54,16 +55,17 @@ public:
             for(int k=1;k<=i;k++)
                { if(p[k-1]!='*')
                 {  flag=0; break; } }
-                  dp[i][0]=flag;. }
+                  dp[i][0]=flag; }
         for(int i=1;i<=m;i++)
         {   for(int j=1;j<=n;j++)
-            {   if(p[i-1]==s[j-1] or p[i-1]=='?') dp[i][j]=dp[i-1][j-1];
-else if(p[i-1]=='*')
-  dp[i][j]=dp[i-1][j] or dp[i][j-1];
-else dp[i][j]=0;
-      }
- }
-return dp[m][n]; 
-  }
+            {   if(p[i-1]==s[j-1] or p[i-1]=='?') 
+                   dp[i][j]=dp[i-1][j-1];
+                 else if(p[i-1]=='*')
+                 dp[i][j]=dp[i-1][j] or dp[i][j-1];
+                 else dp[i][j]=0;
+            }
+        }
+     return dp[m][n]; 
+    }
 };
 
