@@ -1,4 +1,4 @@
-/* TC=O(N^2) SC=O(N) (ASC)
+// TC=o(n^2) sc=o(n) (asc)
 void insert(stack<int>&s,int x)
 {
     if(s.empty() or s.top()<x)
@@ -18,4 +18,4 @@ void SortedStack :: sort()
   sort();
   insert(s,temp);
 }
-*/
+
