@@ -1,4 +1,6 @@
-// tc=o(n+m) // in worst case when target is at last row 2nd index 
+// tc=o(n+m) 
+// in worst case when target is at last 
+// row 2nd index 
 // SC=o(1) 
 class Solution {
 public:
