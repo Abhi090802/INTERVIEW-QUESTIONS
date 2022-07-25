@@ -1,53 +1,43 @@
 // BFS TRAVERSAL 
 // TC=O(M*N) SC=O(M*N) 
-vector<int>dx={-1,0,0,1}; 
-vector<int>dy={0,-1,1,0}; 
-     void bfs(vector<vector<int>> &grid,vector<vector<int>>& vis,queue<pair<int,int>> q,int n,int m)
-   {
-       while(!q.empty())
-       {
-           auto it=q.front();
-           int i=it.first;
-           int j=it.second;
-           q.pop(); 
-           for(int k=0;k<4;k++)
-           { 
-              int x=i+dx[k];  int y=j+dy[k]; 
-              if(x>=0 and x<n and y>=0 and y<m and grid[x][y]==1)
-              { vis[x][y]=vis[i][j]+1; 
-              grid[x][y]=2; 
-              q.push({x,y}); 
-              }
+class Solution {
+public:
+ int orangesRotting(vector<vector<int>>& grid) {
+        
+   int m = grid.size(), n = grid[0].size(), 
+     days = 0, tot = 0, cnt = 0;
+        queue<pair<int, int>> rotten;
+        for(int i = 0; i < m; ++i){
+            for(int j = 0; j < n; ++j){
+              if(grid[i][j] != 0)     tot++;
+                if(grid[i][j] == 2) 
+                 rotten.push({i, j});
             }
-   }
-}
-   int orangesRotting(vector<vector<int>>& grid) 
-   {
-       int ans=INT_MIN;
-       int n=grid.size();
-       int m=grid[0].size();
-       queue<pair<int,int>> q;
-       vector<vector<int>> vis(n,vector<int>(m,0));
-       for(int i=0;i<n;i++)
-       {
-           for(int j=0;j<m;j++)
-           {
-               if(grid[i][j]==2)
-               {
-                   q.push({i,j});
-                   vis[i][j]=0;
-               }
-           }
-       }
-       bfs(grid,vis,q,n,m); 
-       for(int i=0;i<n;i++)
-       {
-           for(int j=0;j<m;j++)
-           {
-                if(grid[i][j]==1) return -1;
-                   ans=max(ans,vis[i][j]);
-           }
-       }
-       return ans;
-   }
+        }
+        
+        int dx[4] = {0, 0, 1, -1};
+        int dy[4] = {1, -1, 0, 0};
+        
+        while(!rotten.empty()){
+            int k = rotten.size();
+            cnt += k; 
+            while(k--){
+                int x = rotten.front().first, 
+                  y = rotten.front().second;
+                rotten.pop();
+                for(int i = 0; i < 4; ++i){
+                    int nx = x + dx[i], 
+                    ny = y + dy[i];
+if(nx < 0 || ny < 0 || nx >= m|| ny >= n ||
+        grid[nx][ny] != 1) continue;
+                    grid[nx][ny] = 2;
+                    rotten.push({nx, ny});
+                }
+            }
+            if(!rotten.empty()) days++;
+        }
+        
+        return tot == cnt ? days : -1;
+    }
+};
 
