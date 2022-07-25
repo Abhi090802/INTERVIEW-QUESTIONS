@@ -1,4 +1,8 @@
-//brute force approach will be a nested one for each element iterate it's ahead all elements and find the first greater element when an element is properly or syricky decreasing one then it runs for 
+//brute force approach will be a nested 
+//one for each element iterate it's 
+//ahead all elements and find the first
+// greater element when an element is properly
+// or stricky decreasing one then it runs for 
 // quadratic based solution
 // Tc=o(n^2) SC=o(1)
 // Optimal approach using stack 
