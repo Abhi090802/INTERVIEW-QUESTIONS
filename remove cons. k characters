@@ -13,7 +13,8 @@ string remove_k_char(int k, string s)
             else {
                 if (s[i] == (stk.top()).first) {
                     stk.push(
-                        { s[i], stk.top().second + 1 });
+                        { s[i], stk.top().second + 
+                         1 });
                     if (stk.top().second == k) {
                         int x = k;
                         while (x) {
