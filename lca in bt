@@ -1,0 +1,104 @@
+// simply find the path from root to both the nodes 
+// tc=o(3*n) sc=o(n)+o(n)+o(n) 
+bool findPath(Node *&root, vector<Node*> &path, int k)
+{
+    if (root == NULL) return false;
+    path.push_back(root);
+    if (root->data== k)
+        return true;
+    if (findPath(root->left, path, k) ||
+          findPath(root->right, path, k))
+        return true;
+    path.pop_back();
+    return false;
+}
+Node* lca(Node *&root, int n1, int n2)
+{
+    vector<Node*> path1, path2;
+    if ( !findPath(root, path1, n1) || !findPath(root, path2, n2))
+          return nullptr;
+    int i;
+    for (i = 0; i < path1.size() && i < path2.size() ; i++)
+        if (path1[i] != path2[i])
+            break;
+    return path1[i-1];
+}
+
+// using two function parameters inorder to check
+// left and right nodes value then finding LCA 
+// tc=o(n) sc=o(n) 
+// in this case it will not handle the scenario 
+// one of the nodes is not present it will return 
+// another node which was wrong.
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+
+class Solution
+{
+    public:
+    Node* lca(Node*&root ,int n1 ,int n2 )
+    {
+       if (root == NULL) return NULL;
+      if (root->data == n1 || root->data == n2)
+        return root;
+ 
+    Node *left_lca  = lca(root->left, n1, n2);
+    Node *right_lca = lca(root->right, n1, n2);
+    if (left_lca && right_lca)  return root;
+ 
+    return (left_lca != NULL)? left_lca: right_lca;
+    }
+};
+// correct approach 
+// tc=o(n) sc=o(n) 
+
+Node *findLCAUtil(struct Node* root, int n1, int n2, bool &v1, bool &v2)
+{
+    if (root == NULL) return NULL; 
+    if(root->key == n1)
+    {
+        v1 = true;
+        return root;
+    }
+    if (root->key == n2)
+    {
+        v2 = true;
+        return root;
+    }
+    Node *left_lca  = findLCAUtil(root->left, n1, n2, v1, v2);
+    Node *right_lca = findLCAUtil(root->right, n1, n2, v1, v2);
+    if (left_lca && right_lca)  return root;
+    return (left_lca != NULL)? left_lca: right_lca;
+}
+
+bool find(Node *root, int k)
+{
+    if (root == NULL)
+        return false;
+    if (root->key == k || find(root->left, k) ||  find(root->right, k))
+        return true;
+    return false;
+}
+
+Node *findLCA(Node *root, int n1, int n2)
+{
+    bool v1 = false, v2 = false;
+    Node *lca = findLCAUtil(root, n1, n2, v1, v2);
+    if (v1 && v2 || v1 && find(lca, n2) || v2 && find(lca, n1))
+        return lca;
+    return NULL;
+}
+
+
+
+
+
