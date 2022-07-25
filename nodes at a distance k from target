@@ -51,7 +51,8 @@ void dfs(Node* root,vector<vector<int>>&adj){
         return v;
     }
 
-// Kind of DFS solution by using blocking node concept 
+// Kind of DFS solution by using blocking
+// node concept 
 // TC=O(NLOGN) SC=LINEAR 
 
 bool findPath(Node* root , int target){
@@ -83,14 +84,14 @@ void printKlevelsDown (Node* root, int k,Node* blocker){
 }
 public:
 
-   vector <int> KDistanceNodes(Node* root, int target , int k)
+   vector <int> KDistanceNodes(Node* root,
+    int target , int k)
    {  path.clear();
       ans.clear();
       findPath(root , target);
-
-     
       for(int i = 0 ; i<path.size() ; i++){
-          printKlevelsDown(path[i] , k-i , i==0?NULL : path[i-1]);
+          printKlevelsDown(path[i] , k-i ,
+            i==0?NULL : path[i-1]);
       }
       sort(ans.begin(),ans.end());
       return ans;
