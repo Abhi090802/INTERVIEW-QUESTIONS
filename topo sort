@@ -1,0 +1,68 @@
+Topological sorting dfs ->can possible for dag (directed acyclic graph) 
+Why directed if undirected then we can't say that there is a edge bewteen u to v or v to u there will be a kind of bijection present thats why directed 
+Why acyclic->bc if there is a cycle there will be a dependency factor that will not lead to required ordered of vertices.
+For example->1->2->3 and 3 to 1 
+then topo sort will be 1->2->3-> here comes twist 3 shud appear before 1 but here it is not possible.
+Wase bhi agar multiple components hue graph me tab vaise bhi topo sort is not possible we can assume that it is a single component graph.
+Stack will make sure that the neighbours are pushed first before the parent.making topo sort possible.  
+If you have to check whether a graph is dag or not simply check the graph shud be directed and no cycles shud present in the graph.
+
+Tc =o(v+e) (standard dfs) 
+Sc=o(v)+o(v+e)+o(v)+o(v)
+void dfs(stack<int>&st,vector<int>adj[],
+          int node,vector<int>&vis)
+          {
+              vis[node]=1; 
+              for(auto it:adj[node])
+                  if(vis[it]==0) 
+                  dfs(st,adj,it,vis); 
+              st.push(node); 
+          }
+    vector<int> topoSort(int V, vector<int> adj[]) 
+    {
+        vector<int>topo; stack<int>st; 
+        vector<int>vis(V,0); 
+        for(int i=0;i<V;i++)
+            if(vis[i]==0)
+                dfs(st,adj,i,vis);
+        while(!st.empty())
+        {
+            topo.push_back(st.top()); 
+            st.pop();
+        }
+        return topo;
+    }
+
+
+// Bfs approach for topo sort(kahn's algorithm) 
+Bhai dekh samj hum initially nodes having indegree of zero ko sabse pahle queue me push kar rhe hai bcz these nodes have individual that much of capability that they can start from itself they have zero dependency fact on any nodes now assume this node is being removed then decrement the indegree of all adj. Node of this node then again check nodes with indegree of zero if update put in the queue and queue will make sure that the node with become the indegree of zero first is being pushed/printed first in topo sort then rest ones.
+Visited array is not being reuired as indegree will act as vis. Array agaar ek baar zero hoke print hogya na agli baar kisi ki bhi adj. Me uski indegree -ve me jayegi zero dubara nhi hogi.
+Tc=o(v+e) (standard bfs) 
+Sc=o(v+e)+o(v)+o(v)
+vector<int> topoSort(int V,vector<int> adj[]) 
+    {
+       queue<int>q; vector<int>in(V,0); 
+       for(int i=0;i<V;i+)
+           for(auto it:adj[i])
+           in[it]++; 
+    vector<int>ans;
+    for(int i=0;i<V;i++)
+    if(in[i]==0) 
+    q.push(i); 
+       while(!q.empty())
+     {
+         int node=q.front(); 
+         ans.push_back(node); 
+         q.pop(); 
+         for(auto it:adj[node])
+         { 
+             in[it]--; 
+             if(in[it]==0) 
+             q.push(it); 
+         }
+     }
+     return ans;
+}
+
+
+
