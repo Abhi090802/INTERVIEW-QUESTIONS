@@ -1,0 +1,29 @@
+// TC=o(n*max)+o(n+n)// max=maximum length of word
+// Sc=o(o(n+n)+o(n)+o(n)+o(n)
+// har ek do pair of strings ko compare karne
+// ke baad hamko ek edge milti hai so 
+// the graph is of n nodes and n-1 edges 
+
+void dfs(int node, vector<int> &vis, vector<int> adj[], stack<int> &st){
+       vis[node]=1;
+       for(auto x:adj[node]) if(!vis[x]) dfs(x,vis,adj,st);
+       st.push(node);
+   }
+   string findOrder(string dict[], int n, int k) {       vector<int> adj[k];
+       for(int i=0;i<n-1;i++){
+           string a=dict[i], b=dict[i+1];
+           int m=min(a.size(), b.size());
+           for(int j=0;j<m;j++){
+               if(a[j]!=b[j]){
+                   adj[a[j]-'a'].push_back(b[j]-'a');
+                   break;
+               }
+           }
+       }
+       stack<int> st;
+       vector<int> vis(k,0);
+       for(int i=0;i<k;i++) if(!vis[i]) dfs(i,vis,adj,st);
+       string ans="";
+       while(!st.empty()) ans+=(st.top()+'a'), st.pop();
+       return ans;
+   }
